@@ -21,7 +21,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 nltk.download('stopwords')
 
-train=pd.read_csv(".\\train.csv")
+train=pd.read_csv("./train.csv")
 # 1=Fake news
 # 0=Real news
 from sklearn.impute import SimpleImputer
