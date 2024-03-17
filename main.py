@@ -4,7 +4,7 @@ st.title('Fake News Detector')
 st.write('# Find out if your news article is fake or not',)
 
 author=st.text_input("News article author's name",key='author')
-news_title=st.text_input("News article author's name",key='news_title')
+news_title=st.text_input("News article title",key='news_title')
 news_content=st.text_input("Content of the news article",key='news_content')
 
 
@@ -29,7 +29,7 @@ imputer=SimpleImputer(fill_value='',strategy='constant')
 train=pd.DataFrame(imputer.fit_transform(train),columns=train.columns)
 
 #merging columns
-train['content']=train['title']+''+train['author']+''+train['text']
+train['content']=train['title']+''+train['author']
 
 port_stem = PorterStemmer()
 def stemming(content):
@@ -56,7 +56,7 @@ model.fit(X,Y)
 
 st.button('Check Authenticity of the news article')
 
-user_input=author+' '+news_title+' '+news_content
+user_input=author+' '+news_title
 user_input=user_input.apply(stemming)
 output=model.predict(user_input)
 st.write(output)  
