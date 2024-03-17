@@ -54,9 +54,14 @@ model=LogisticRegression()
 model.fit(X,Y)
 
 
-st.button('Check Authenticity of the news article')
-
-user_input=author+' '+news_title
-user_input=user_input.apply(stemming)
-output=model.predict(user_input)
-st.write(output)  
+if st.button('Check Authenticity of the news article'):
+    # Create an empty DataFrame with specified columns
+    df = pd.DataFrame(columns=['author', 'title'])
+    # Add a row of content to the DataFrame
+    df.loc[0] = [author,news_title]
+    user_input=pd.DataFrame(imputer.fit_transform(df),columns=df.columns)
+    user_input=df['author']+' '+df['news_title']
+    user_input=user_input.apply(stemming)
+    output=model.predict(user_input)
+    print(output)
+    output
