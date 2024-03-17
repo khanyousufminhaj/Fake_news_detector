@@ -1,11 +1,4 @@
-#streamlit formatting
-import streamlit as st
-st.title('Fake News Detector')
-st.write('# Find out if your news article is fake or not',)
 
-author=st.text_input("News article author's name",key='author')
-news_title=st.text_input("News article title",key='news_title')
-news_content=st.text_input("Content of the news article",key='news_content')
 
 
 
@@ -53,6 +46,15 @@ X=vectorizer.fit_transform(X)
 model=LogisticRegression()
 model.fit(X,Y)
 
+
+#streamlit formatting
+import streamlit as st
+st.title('Fake News Detector')
+st.write('# Find out if your news article is fake or not',)
+
+author=st.text_input("News article author's name",key='author')
+news_title=st.text_input("News article title",key='news_title')
+news_content=st.text_input("Content of the news article",key='news_content')
 
 if st.button('Check Authenticity of the news article'):
     # Create an empty DataFrame with specified columns
