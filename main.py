@@ -13,7 +13,7 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 nltk.download('stopwords')
-
+stop_words=set(stopwords.words('english'))
 train=pd.read_csv("./train.csv")
 # 1=Fake news
 # 0=Real news
@@ -29,7 +29,7 @@ def stemming(content):
     stemmed_content = re.sub('[^a-zA-Z]',' ',content)
     stemmed_content = stemmed_content.lower()
     stemmed_content = stemmed_content.split()
-    stemmed_content = [port_stem.stem(word) for word in stemmed_content if not word in stopwords.words('english')]
+    stemmed_content = [port_stem.stem(word) for word in stemmed_content if not word in stop_words]
     stemmed_content = ' '.join(stemmed_content)
     return stemmed_content
 
@@ -57,13 +57,11 @@ news_title=st.text_input("News article title",key='news_title')
 news_content=st.text_input("Content of the news article",key='news_content')
 
 if st.button('Check Authenticity of the news article'):
-    # Create an empty DataFrame with specified columns
-    df = pd.DataFrame(columns=['author', 'title'])
-    # Add a row of content to the DataFrame
-    df.loc[0] = [author,news_title]
-    user_input=pd.DataFrame(imputer.fit_transform(df),columns=df.columns)
-    user_input=df['author']+' '+df['news_title']
-    user_input=user_input.apply(stemming)
-    output=model.predict(user_input)
-    print(output)
-    output
+  # Preprocess user input
+    user_input = stemming(f"{author} {news_title}")
+    user_input = vectorizer.transform([user_input])    
+    prediction = model.predict(user_input)
+    if prediction[0] == 1:
+        st.write('### The news article is likely fake.')
+    else:
+        st.write('### The news article is likely real.')
